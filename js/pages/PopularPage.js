@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 
 import NavigationBar from "../component/NavigationBar"
-import ScrollableTabView from "react-native-scrollable-tab-view"
+// import ScrollableTabView from "react-native-scrollable-tab-view"
 
 export default class PopularPage extends Component{
 
     render(){
         return <View style={styles.container}>
-
+            <NavigationBar/>
         </View>;
     }
 }

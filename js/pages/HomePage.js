@@ -35,8 +35,7 @@ export default class HomePage extends Component {
                         <Image style={[styles.icon,{tintColor:'#63B8ff'}]} source={require('../../res/images/ic_popular.png')}/>}
                     onPress={() => this.setState({selectedTab:'popular'})}
                     >
-
-                    <View style={{backgroundColor:'#f00',flex:1}}></View>
+                    <PopularPage/>
                 </TabNavigator.Item>
 
                 <TabNavigator.Item

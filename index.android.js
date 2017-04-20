@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import HomePage from "./js/pages/HomePage";
-import NavigationBar from "./js/component/NavigationBar";
+// import NavigationBar from "./js/component/NavigationBar";
 
 export default class rn_github extends Component {
   render() {
