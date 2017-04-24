@@ -12,23 +12,23 @@ import {
   View
 } from 'react-native';
 
-import HomePage from "./js/pages/HomePage";
-// import NavigationBar from "./js/component/NavigationBar";
+import setup from "./js/pages/setup";
 
-export default class rn_github extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <HomePage/>
-      </View>
-    );
-  }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
+// export default class rn_github extends Component {
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         <HomePage/>
+//       </View>
+//     );
+//   }
+// }
+//
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1
+//   }
+// });
 
-AppRegistry.registerComponent('rn_github', () => rn_github);
+AppRegistry.registerComponent('rn_github', () => setup);

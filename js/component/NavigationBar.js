@@ -1,7 +1,7 @@
 /**
  * Created by WQ on 2017/4/19.
  */
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -14,6 +14,12 @@ import {
 } from 'react-native';
 
 export default class NavigationBar extends Component {
+    static propTypes = {
+        //验证，不传element组件类型，会报错提示
+        rightButton : PropTypes.element,
+        leftButton : PropTypes.element
+    }
+
     render() {
         return <View style={styles.container}>
             <View style={styles.statusBar}>
@@ -21,19 +27,14 @@ export default class NavigationBar extends Component {
             </View>
             {/*顶部导航栏*/}
             <View style={styles.navBar}>
-                <View style={styles.navBtn}></View>
+                <View style={styles.leftBtnStyle}>
+                    {this.props.leftButton}
+                </View>
                 <View style={styles.titleWrapper}>
-                    <Text style={styles.title}>热门</Text>
+                    <Text style={styles.title}>{this.props.title}</Text>
                 </View>
                 <View style={styles.rightBtn}>
-                    <TouchableOpacity
-                        activeOpacity={0.7}>
-                        <Image source={require('../../res/images/ic_search_white_48pt.png')} style={styles.navBtn}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={0.7}>
-                        <Image source={require('../../res/images/ic_more_vert_white_48pt.png')} style={styles.navBtn}/>
-                    </TouchableOpacity>
+                    {this.props.rightButton}
                 </View>
             </View>
         </View>;
@@ -66,8 +67,8 @@ const styles = StyleSheet.create({
         fontSize:16,
         color:'#fff'
     },
-    navBtn:{
-        width:24,
+    leftBtnStyle:{
+        flexDirection:'row',
         height:24
     },
     rightBtn:{
