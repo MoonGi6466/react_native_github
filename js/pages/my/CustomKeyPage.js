@@ -9,12 +9,14 @@ import {
     View,
     Image,
     TouchableOpacity,
-    AsyncStorage
+    AsyncStorage,
+    Alert
 } from 'react-native';
 
 import NavigationBar from "../../component/NavigationBar";
 import CheckBox from "react-native-check-box";
 import Toast from "react-native-easy-toast";
+import ArrayUtils from "../../component/ArrayUtils";
 
 export default class CustomKeyPage extends Component{
     constructor(props){
@@ -30,16 +32,35 @@ export default class CustomKeyPage extends Component{
         };
     }
 
-    handleBack = () =>{
+    doBack = ()=>{
         //把任务栈顶部的任务清除
         this.props.navigator.pop();
     }
 
-    //保存
-    handleSave = ()=>{
+    //返回
+    handleBack = () =>{
+        if(ArrayUtils.isAbsEqual(this.originData,this.state.data)){
+            this.doBack();
+            return;
+        }
+        Alert.alert('提示','是否需要保存？',[
+            {text: '是',onPress: ()=>{this.doSave()}},
+            {text: '否',onPress: ()=>{this.doBack()}}
+        ]);
+    }
+
+    doSave = () => {
         //AsyncStorage是一个简单的、异步的、持久化的Key-Value存储系统
         AsyncStorage.setItem('custom_key',JSON.stringify(this.state.data))
-            .then(()=> this.refs.toast.show("保存成功"));
+            .then(()=> {
+                this.refs.toast.show("保存成功");
+                this.doBack();
+            });
+    }
+
+    //保存
+    handleSave = ()=>{
+        this.doSave();
     }
 
     getNavLeftBtn = ()=>{
@@ -56,7 +77,7 @@ export default class CustomKeyPage extends Component{
         return <View style={{flexDirection:'row',alignItems:'center'}}>
             <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={this.handleSave()}>
+                onPress={this.handleSave}>
                 <View style={{marginRight:10}}>
                     <Text style={{fontSize:16,color:'#FFF'}}>保存</Text>
                 </View>
@@ -66,6 +87,7 @@ export default class CustomKeyPage extends Component{
 
     handleClick = (item)=>{
         item.checked = !item.checked;
+        this.setState({isModified:true});
     }
 
     renderCheckBox=(item)=>{
@@ -114,11 +136,15 @@ export default class CustomKeyPage extends Component{
     }
 
     componentDidMount = () => {
+        //加载本地数据
         AsyncStorage.getItem('custom_key')
             .then(value=>{
+                //有用户数据，选中该选中CheckBox
                 if(value !==null){
                     this.setState({data:JSON.parse(value)});
                 }
+                //把原始数组克隆
+                this.originData = ArrayUtils.clone(this.state.data)
             });
     }
 }

@@ -10,7 +10,8 @@ import {
     Image,
     ListView,
     RefreshControl,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
 
 import NavigationBar from "../component/NavigationBar"
@@ -21,7 +22,13 @@ export default class PopularPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            languages: ["Android","IOS","Java","React","JS"]
+            languages: [
+                {name:'Android'},
+                {name:'IOS'},
+                {name:'React'},
+                {name:'Java'},
+                {name:'JS'}
+            ]
         };
     }
 
@@ -39,6 +46,15 @@ export default class PopularPage extends Component{
         </View>;
     }
 
+    loadLanguages = ()=>{
+        AsyncStorage.getItem('custom_key')
+            .then((value)=>{
+                if(value != null){
+                    this.setState({languages:JSON.parse(value)});
+                }
+            });
+    }
+
     render(){
         return <View style={styles.container}>
             <NavigationBar
@@ -51,11 +67,16 @@ export default class PopularPage extends Component{
                 tabBarUnderlineStyle={{backgroundColor:"#E7E7E7",height:2}}>
                 {
                     this.state.languages.map((item,i)=>{
-                        return <PopularTab key={`tab${i}`} tabLabel={item}/>
+                        return (item.checked == undefined || item.checked) ? <PopularTab key={`tab${i}`} tabLabel={item.name}/> : null;
                     })
                 }
             </ScrollableTabView>
         </View>;
+    }
+
+    componentDidMount = ()=>{
+        //读取数据
+        this.loadLanguages();
     }
 }
 
